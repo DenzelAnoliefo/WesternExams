@@ -9,9 +9,8 @@ import { AuthService } from '../../core/services/auth.service';
   imports: [FormsModule],
   template: `
     <div class="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
-      <!-- Background gradient -->
-      <div class="absolute inset-0 bg-gradient-to-br from-western-purple via-western-purple-dark to-gray-950"></div>
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(79,38,131,0.3),transparent_70%)]"></div>
+      <!-- Background -->
+      <div class="absolute inset-0 bg-[#4B2E83]"></div>
 
       <!-- Content -->
       <div class="relative z-10 text-center px-4 max-w-3xl mx-auto">
@@ -55,7 +54,7 @@ import { AuthService } from '../../core/services/auth.service';
         <!-- Stats -->
         <div class="mt-16 flex items-center justify-center gap-12 text-gray-400">
           <div class="text-center">
-            <div class="text-2xl font-bold text-white">20+</div>
+            <div class="text-2xl font-bold text-white">250+</div>
             <div class="text-sm">Courses</div>
           </div>
           <div class="w-px h-10 bg-gray-700"></div>
