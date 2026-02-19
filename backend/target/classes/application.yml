@@ -1,0 +1,47 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+
+cors:
+  allowed-origins: "http://localhost:4200"
+  allowed-methods: "*"
+  allowed-headers: "*"
+  exposed-headers: "Authorization"
+
+aws:
+  region: us-east-1
+  s3:
+    mock: true
+    buckets:
+      exams: westernexams-pdf-dev
+
+jwt:
+  secret-key: "westernexams-dev-secret-key-must-be-at-least-256-bits-long-for-hmac-sha"
+  expiration-days: 15
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/westernexams
+    username: westernexams
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: false
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+  profiles:
+    active: dev
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info"

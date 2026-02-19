@@ -1,0 +1,22 @@
+services:
+  db:
+    container_name: westernexams-postgres
+    image: postgres:16
+    environment:
+      POSTGRES_USER: westernexams
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: westernexams
+    volumes:
+      - westernexams-db:/data/postgres
+    ports:
+      - "5433:5432"
+    networks:
+      - westernexams-net
+    restart: unless-stopped
+
+networks:
+  westernexams-net:
+    driver: bridge
+
+volumes:
+  westernexams-db:
