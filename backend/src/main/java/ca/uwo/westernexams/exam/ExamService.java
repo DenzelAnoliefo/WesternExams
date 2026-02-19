@@ -36,6 +36,15 @@ public class ExamService {
     }
 
     public Page<ExamDTO> searchExams(ExamSearchCriteria criteria, Pageable pageable) {
+        boolean hasFilters = criteria.search() != null
+                || criteria.faculty() != null
+                || criteria.year() != null
+                || criteria.term() != null;
+
+        if (!hasFilters) {
+            return examRepository.findAllExams(pageable).map(this::toDTO);
+        }
+
         return examRepository.searchExams(
                 criteria.search(),
                 criteria.faculty(),

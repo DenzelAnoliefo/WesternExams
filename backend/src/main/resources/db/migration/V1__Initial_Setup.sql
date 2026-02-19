@@ -10,14 +10,14 @@ CREATE TABLE users (
 );
 
 CREATE TABLE courses (
-    code VARCHAR(10) PRIMARY KEY,
+    code VARCHAR(20) PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     faculty VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE exams (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    course_code VARCHAR(10) NOT NULL REFERENCES courses(code),
+    course_code VARCHAR(20) NOT NULL REFERENCES courses(code),
     s3_key VARCHAR(512) NOT NULL,
     term VARCHAR(10) NOT NULL,
     year INT NOT NULL,

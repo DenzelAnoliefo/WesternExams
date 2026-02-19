@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Course } from '../models/course.model';
@@ -11,7 +11,10 @@ export class CourseService {
   constructor(private http: HttpClient) {}
 
   searchCourses(query?: string): Observable<Course[]> {
-    const params = query ? { q: query } : {};
+    let params = new HttpParams();
+    if (query) {
+      params = params.set('q', query);
+    }
     return this.http.get<Course[]>(this.apiUrl, { params });
   }
 }

@@ -23,6 +23,10 @@ import { AuthService } from '../../core/services/auth.service';
             </a>
 
             @if (auth.isAuthenticated()) {
+              <a routerLink="/search" [queryParams]="{upload: true}"
+                 class="bg-western-purple hover:bg-western-purple-light text-white px-4 py-2 rounded-lg transition-colors font-medium text-sm">
+                Upload
+              </a>
               <button (click)="auth.logout()"
                       class="text-gray-300 hover:text-white transition-colors">
                 Logout

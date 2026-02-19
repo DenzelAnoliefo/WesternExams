@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-landing',
@@ -23,14 +24,14 @@ import { FormsModule } from '@angular/forms';
 
         <h1 class="text-5xl sm:text-6xl font-extrabold text-white mb-6 tracking-tight">
           Welcome to
-          <span class="bg-gradient-to-r from-purple-300 to-white bg-clip-text text-transparent">
+          <span class="text-purple-300">
             WesternExams
           </span>
         </h1>
 
         <p class="text-lg sm:text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
           Your centralized repository for past exams, midterms, and study resources.
-          Search, preview, and contribute — all in one place.
+          Search, preview, and contribute all in one place.
         </p>
 
         <!-- Search bar -->
@@ -75,9 +76,14 @@ import { FormsModule } from '@angular/forms';
 export class LandingComponent {
   searchQuery = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private auth: AuthService) {}
 
   onSearch(): void {
+    if (!this.auth.isAuthenticated()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
     if (this.searchQuery.trim()) {
       this.router.navigate(['/search'], {
         queryParams: { search: this.searchQuery.trim() }

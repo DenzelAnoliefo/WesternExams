@@ -31,6 +31,10 @@ export class ExamService {
     return `${this.apiUrl}/${id}/download`;
   }
 
+  downloadExamBlob(id: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/${id}/download`, { responseType: 'blob' });
+  }
+
   uploadExam(metadata: any, file: File): Observable<Exam> {
     const formData = new FormData();
     formData.append('file', file);

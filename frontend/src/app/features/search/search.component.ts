@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Subject, debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { ExamService } from '../../core/services/exam.service';
 import { Exam, ExamSearchParams, PageResponse } from '../../core/models/exam.model';
 import { ExamCardComponent } from './components/exam-card.component';
 import { FilterSidebarComponent } from './components/filter-sidebar.component';
+import { UploadModalComponent } from '../upload/upload-modal.component';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, FormsModule, ExamCardComponent, FilterSidebarComponent],
+  imports: [CommonModule, FormsModule, ExamCardComponent, FilterSidebarComponent, UploadModalComponent],
   template: `
     <div class="pt-20 min-h-screen">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -21,6 +24,7 @@ import { FilterSidebarComponent } from './components/filter-sidebar.component';
             <input
               type="text"
               [(ngModel)]="searchQuery"
+              (ngModelChange)="onSearchInput($event)"
               (keyup.enter)="onSearch()"
               placeholder="Search by course code or name..."
               class="w-full px-5 py-3 rounded-xl bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-western-purple focus:border-transparent"
@@ -70,56 +74,105 @@ import { FilterSidebarComponent } from './components/filter-sidebar.component';
                   </button>
                 </div>
               }
-            } @else {
+            } @else if (hasSearched) {
               <div class="text-center py-16">
                 <div class="text-5xl mb-4">📚</div>
                 <h3 class="text-xl font-semibold text-white mb-2">No exams found</h3>
                 <p class="text-gray-400">Try adjusting your search or filters.</p>
+              </div>
+            } @else {
+              <div class="text-center py-16">
+                <div class="text-5xl mb-4">📚</div>
+                <h3 class="text-xl font-semibold text-white mb-2">No exams uploaded yet</h3>
+                <p class="text-gray-400">Be the first to contribute! Upload an exam to get started.</p>
               </div>
             }
           </div>
         </div>
       </div>
     </div>
+
+    @if (showUploadModal) {
+      <app-upload-modal (close)="closeUploadModal()" (uploaded)="onUploaded()"></app-upload-modal>
+    }
   `
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
   searchQuery = '';
   results: PageResponse<Exam> | null = null;
   loading = false;
   currentPage = 0;
+  showUploadModal = false;
+  hasSearched = false;
   private currentFilters: ExamSearchParams = {};
+  private searchSubject = new Subject<string>();
+  private searchSub?: Subscription;
 
   constructor(
     private examService: ExamService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public auth: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.searchSub = this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(query => {
+      this.searchQuery = query;
+      this.currentPage = 0;
+      this.hasSearched = query.length > 0;
+      this.loadExams();
+    });
+
     this.route.queryParams.subscribe(params => {
       if (params['search']) {
         this.searchQuery = params['search'];
+        this.hasSearched = true;
+      }
+      if (params['upload'] === 'true' && this.auth.isAuthenticated()) {
+        this.showUploadModal = true;
       }
       this.loadExams();
     });
   }
 
+  ngOnDestroy(): void {
+    this.searchSub?.unsubscribe();
+  }
+
+  onSearchInput(query: string): void {
+    this.searchSubject.next(query);
+  }
+
   onSearch(): void {
     this.currentPage = 0;
-    this.router.navigate(['/search'], {
-      queryParams: { search: this.searchQuery || undefined }
-    });
+    this.hasSearched = true;
+    this.loadExams();
   }
 
   onFiltersChanged(filters: ExamSearchParams): void {
     this.currentFilters = filters;
     this.currentPage = 0;
+    this.hasSearched = true;
     this.loadExams();
   }
 
   goToPage(page: number): void {
     this.currentPage = page;
+    this.loadExams();
+  }
+
+  closeUploadModal(): void {
+    this.showUploadModal = false;
+    this.router.navigate(['/search'], {
+      queryParams: { search: this.searchQuery || undefined }
+    });
+  }
+
+  onUploaded(): void {
+    this.closeUploadModal();
     this.loadExams();
   }
 
@@ -137,7 +190,8 @@ export class SearchComponent implements OnInit {
         this.results = data;
         this.loading = false;
       },
-      error: () => {
+      error: (err) => {
+        console.error('Failed to load exams:', err);
         this.loading = false;
       }
     });

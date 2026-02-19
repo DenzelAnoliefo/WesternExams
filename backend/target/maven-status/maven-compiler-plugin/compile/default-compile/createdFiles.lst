@@ -15,6 +15,7 @@ ca/uwo/westernexams/exception/RequestValidationException.class
 ca/uwo/westernexams/user/UserDetailsServiceImpl.class
 ca/uwo/westernexams/s3/S3Service.class
 ca/uwo/westernexams/auth/AuthenticationController.class
+ca/uwo/westernexams/email/EmailService.class
 ca/uwo/westernexams/exam/ExamRepository.class
 ca/uwo/westernexams/user/Role.class
 ca/uwo/westernexams/exam/ExamType.class

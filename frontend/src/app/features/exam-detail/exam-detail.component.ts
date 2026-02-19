@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -22,11 +22,17 @@ import { Exam } from '../../core/models/exam.model';
             <!-- PDF Viewer -->
             <div class="flex-1">
               <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
-                <iframe
-                  [src]="pdfUrl"
-                  class="w-full h-[80vh]"
-                  title="Exam PDF">
-                </iframe>
+                @if (pdfUrl) {
+                  <iframe
+                    [src]="pdfUrl"
+                    class="w-full h-[80vh]"
+                    title="Exam PDF">
+                  </iframe>
+                } @else {
+                  <div class="flex items-center justify-center h-[80vh]">
+                    <div class="animate-spin w-8 h-8 border-2 border-western-purple border-t-transparent rounded-full"></div>
+                  </div>
+                }
               </div>
             </div>
 
@@ -64,7 +70,7 @@ import { Exam } from '../../core/models/exam.model';
                   </div>
                 </dl>
 
-                <a [href]="downloadUrl" download
+                <a [href]="downloadUrl" target="_blank" rel="noopener noreferrer"
                    class="mt-6 block w-full text-center bg-western-purple hover:bg-western-purple-light text-white font-medium py-3 rounded-lg transition-colors">
                   Download PDF
                 </a>
@@ -80,11 +86,12 @@ import { Exam } from '../../core/models/exam.model';
     </div>
   `
 })
-export class ExamDetailComponent implements OnInit {
+export class ExamDetailComponent implements OnInit, OnDestroy {
   exam: Exam | null = null;
-  pdfUrl: SafeResourceUrl = '';
+  pdfUrl: SafeResourceUrl | null = null;
   downloadUrl = '';
   loading = true;
+  private blobUrl: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -95,7 +102,6 @@ export class ExamDetailComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id')!;
     this.downloadUrl = this.examService.getDownloadUrl(id);
-    this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.downloadUrl);
 
     this.examService.getExam(id).subscribe({
       next: (exam) => {
@@ -106,5 +112,18 @@ export class ExamDetailComponent implements OnInit {
         this.loading = false;
       }
     });
+
+    this.examService.downloadExamBlob(id).subscribe({
+      next: (blob) => {
+        this.blobUrl = URL.createObjectURL(blob);
+        this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.blobUrl);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.blobUrl) {
+      URL.revokeObjectURL(this.blobUrl);
+    }
   }
 }

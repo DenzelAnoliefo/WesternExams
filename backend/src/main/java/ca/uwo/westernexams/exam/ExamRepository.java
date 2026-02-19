@@ -10,14 +10,22 @@ import java.util.UUID;
 
 public interface ExamRepository extends JpaRepository<Exam, UUID> {
 
-    @Query("""
+    @Query(value = """
             SELECT e FROM Exam e JOIN FETCH e.course c JOIN FETCH e.uploadedBy u
-            WHERE (:search IS NULL OR UPPER(c.code) LIKE UPPER(CONCAT('%', :search, '%'))
+            WHERE (COALESCE(:search, '') = '' OR UPPER(c.code) LIKE UPPER(CONCAT('%', :search, '%'))
                    OR UPPER(c.name) LIKE UPPER(CONCAT('%', :search, '%')))
-            AND (:faculty IS NULL OR c.faculty = :faculty)
+            AND (COALESCE(:faculty, '') = '' OR c.faculty = :faculty)
             AND (:year IS NULL OR e.year = :year)
             AND (:term IS NULL OR e.term = :term)
             ORDER BY e.createdAt DESC
+            """,
+            countQuery = """
+            SELECT COUNT(e) FROM Exam e JOIN e.course c
+            WHERE (COALESCE(:search, '') = '' OR UPPER(c.code) LIKE UPPER(CONCAT('%', :search, '%'))
+                   OR UPPER(c.name) LIKE UPPER(CONCAT('%', :search, '%')))
+            AND (COALESCE(:faculty, '') = '' OR c.faculty = :faculty)
+            AND (:year IS NULL OR e.year = :year)
+            AND (:term IS NULL OR e.term = :term)
             """)
     Page<Exam> searchExams(
             @Param("search") String search,
@@ -26,4 +34,11 @@ public interface ExamRepository extends JpaRepository<Exam, UUID> {
             @Param("term") Term term,
             Pageable pageable
     );
+
+    @Query(value = """
+            SELECT e FROM Exam e JOIN FETCH e.course JOIN FETCH e.uploadedBy
+            ORDER BY e.createdAt DESC
+            """,
+            countQuery = "SELECT COUNT(e) FROM Exam e")
+    Page<Exam> findAllExams(Pageable pageable);
 }

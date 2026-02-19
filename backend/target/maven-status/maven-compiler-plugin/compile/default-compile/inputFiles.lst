@@ -25,6 +25,7 @@
 /Users/zelanoliefo/Documents/western-exams/backend/src/main/java/ca/uwo/westernexams/exception/DelegatedAuthEntryPoint.java
 /Users/zelanoliefo/Documents/western-exams/backend/src/main/java/ca/uwo/westernexams/user/Role.java
 /Users/zelanoliefo/Documents/western-exams/backend/src/main/java/ca/uwo/westernexams/auth/AuthenticationController.java
+/Users/zelanoliefo/Documents/western-exams/backend/src/main/java/ca/uwo/westernexams/email/EmailService.java
 /Users/zelanoliefo/Documents/western-exams/backend/src/main/java/ca/uwo/westernexams/exception/DuplicateResourceException.java
 /Users/zelanoliefo/Documents/western-exams/backend/src/main/java/ca/uwo/westernexams/s3/S3Service.java
 /Users/zelanoliefo/Documents/western-exams/backend/src/main/java/ca/uwo/westernexams/security/SecurityFilterChainConfig.java

@@ -21,6 +21,17 @@ jwt:
   expiration-days: 15
 
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:westernuexams@gmail.com}
+    password: ${MAIL_PASSWORD:yuwgazqeaegeqlrxb}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   datasource:
     url: jdbc:postgresql://localhost:5433/westernexams
     username: westernexams

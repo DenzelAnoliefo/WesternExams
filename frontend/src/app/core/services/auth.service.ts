@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthResponse, LoginRequest, RegisterRequest, User } from '../models/user.model';
@@ -9,7 +10,7 @@ export class AuthService {
   private apiUrl = environment.apiUrl;
   currentUser = signal<User | null>(null);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this.loadUserFromToken();
   }
 
@@ -34,6 +35,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     this.currentUser.set(null);
+    this.router.navigate(['/']);
   }
 
   getToken(): string | null {
