@@ -4,10 +4,14 @@ import { Component } from '@angular/core';
   selector: 'app-footer',
   standalone: true,
   template: `
-    <footer class="border-t border-gray-800 bg-gray-950 py-8 mt-16">
-      <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
-        <p>&copy; 2026 WesternExams. Built for Western University students.</p>
-        <p class="mt-1">Not affiliated with Western University.</p>
+    <footer class="bg-black border-t border-white/[0.06] py-10">
+      <div class="max-w-7xl mx-auto px-4 text-center">
+        <div class="flex items-center justify-center gap-2.5 mb-4">
+          <div class="w-7 h-7 bg-western-purple rounded-lg flex items-center justify-center font-bold text-white text-sm">W</div>
+          <span class="text-lg font-bold text-white">WesternExams</span>
+        </div>
+        <p class="text-gray-500 text-sm">&copy; 2026 WesternExams. Built for Western University students.</p>
+        <p class="mt-1 text-gray-600 text-xs">Not affiliated with Western University.</p>
       </div>
     </footer>
   `
