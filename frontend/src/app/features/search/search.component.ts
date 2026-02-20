@@ -15,39 +15,47 @@ import { AuthService } from '../../core/services/auth.service';
   standalone: true,
   imports: [CommonModule, FormsModule, ExamCardComponent, FilterSidebarComponent, UploadModalComponent],
   template: `
-    <div class="pt-20 min-h-screen">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Search header -->
-        <div class="mb-8">
-          <h1 class="text-3xl font-bold text-white mb-4">Browse Exams</h1>
+    <div class="pt-24 pb-16 min-h-screen">
+      <div class="max-w-6xl mx-auto px-6">
+
+        <!-- Header -->
+        <div class="mb-10">
+          <h1 class="text-3xl font-black text-white mb-1">Browse Exams</h1>
+          <p class="text-gray-400 text-sm mb-6">Search past exams by course code, name, or professor.</p>
           <div class="relative max-w-xl">
+            <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
+            </div>
             <input
               type="text"
               [(ngModel)]="searchQuery"
               (ngModelChange)="onSearchInput($event)"
               (keyup.enter)="onSearch()"
               placeholder="Search by course code or name..."
-              class="w-full px-5 py-3 rounded-xl bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-western-purple focus:border-transparent"
+              class="w-full pl-12 pr-5 py-3 rounded-xl bg-gray-900 border border-gray-800 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-western-purple focus:border-transparent transition-all"
             />
           </div>
         </div>
 
         <!-- Main layout -->
         <div class="flex gap-8">
+
           <!-- Sidebar -->
-          <div class="w-64 flex-shrink-0 hidden lg:block">
+          <div class="w-56 flex-shrink-0 hidden lg:block">
             <app-filter-sidebar (filtersChanged)="onFiltersChanged($event)"></app-filter-sidebar>
           </div>
 
           <!-- Results -->
-          <div class="flex-1">
+          <div class="flex-1 min-w-0">
             @if (loading) {
-              <div class="text-center py-12">
-                <div class="animate-spin w-8 h-8 border-2 border-western-purple border-t-transparent rounded-full mx-auto"></div>
-                <p class="text-gray-400 mt-4">Searching...</p>
+              <div class="flex flex-col items-center justify-center py-20">
+                <div class="animate-spin w-8 h-8 border-2 border-western-purple border-t-transparent rounded-full"></div>
+                <p class="text-gray-500 mt-4 text-sm">Searching...</p>
               </div>
             } @else if (results && results.content.length > 0) {
-              <p class="text-sm text-gray-400 mb-4">
+              <p class="text-xs text-gray-500 mb-4 font-medium uppercase tracking-wide">
                 {{ results.totalElements }} result{{ results.totalElements !== 1 ? 's' : '' }} found
               </p>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -58,33 +66,41 @@ import { AuthService } from '../../core/services/auth.service';
 
               <!-- Pagination -->
               @if (results.totalPages > 1) {
-                <div class="flex items-center justify-center gap-2 mt-8">
+                <div class="flex items-center justify-center gap-3 mt-10">
                   <button (click)="goToPage(currentPage - 1)"
                           [disabled]="currentPage === 0"
-                          class="px-4 py-2 rounded-lg bg-gray-800 text-white disabled:opacity-30 hover:bg-gray-700 transition-colors">
+                          class="px-4 py-2 rounded-lg bg-gray-900 border border-gray-800 text-sm text-white font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:border-gray-700 transition-colors">
                     Previous
                   </button>
-                  <span class="text-gray-400 px-4">
-                    Page {{ currentPage + 1 }} of {{ results.totalPages }}
+                  <span class="text-gray-500 text-sm px-2">
+                    {{ currentPage + 1 }} / {{ results.totalPages }}
                   </span>
                   <button (click)="goToPage(currentPage + 1)"
                           [disabled]="currentPage >= results.totalPages - 1"
-                          class="px-4 py-2 rounded-lg bg-gray-800 text-white disabled:opacity-30 hover:bg-gray-700 transition-colors">
+                          class="px-4 py-2 rounded-lg bg-gray-900 border border-gray-800 text-sm text-white font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:border-gray-700 transition-colors">
                     Next
                   </button>
                 </div>
               }
             } @else if (hasSearched) {
-              <div class="text-center py-16">
-                <div class="text-5xl mb-4">📚</div>
-                <h3 class="text-xl font-semibold text-white mb-2">No exams found</h3>
-                <p class="text-gray-400">Try adjusting your search or filters.</p>
+              <div class="flex flex-col items-center justify-center py-20">
+                <div class="w-14 h-14 rounded-2xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                  </svg>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-1">No exams found</h3>
+                <p class="text-gray-500 text-sm">Try adjusting your search or filters.</p>
               </div>
             } @else {
-              <div class="text-center py-16">
-                <div class="text-5xl mb-4">📚</div>
-                <h3 class="text-xl font-semibold text-white mb-2">No exams uploaded yet</h3>
-                <p class="text-gray-400">Be the first to contribute! Upload an exam to get started.</p>
+              <div class="flex flex-col items-center justify-center py-20">
+                <div class="w-14 h-14 rounded-2xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                  </svg>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-1">No exams uploaded yet</h3>
+                <p class="text-gray-500 text-sm">Be the first to contribute! Upload an exam to get started.</p>
               </div>
             }
           </div>

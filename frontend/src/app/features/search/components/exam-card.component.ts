@@ -9,32 +9,33 @@ import { Exam } from '../../../core/models/exam.model';
   imports: [CommonModule, RouterLink],
   template: `
     <a [routerLink]="['/exams', exam.id]"
-       class="block bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-western-purple/50 hover:bg-gray-900/80 transition-all group cursor-pointer">
+       class="block bg-gray-900 border border-gray-800 rounded-2xl p-5 hover:border-western-purple transition-colors group">
+
       <div class="flex items-start justify-between mb-3">
-        <span class="bg-western-purple/20 text-western-purple-light px-3 py-1 rounded-lg text-sm font-bold">
+        <span class="bg-western-purple-dark text-purple-300 px-3 py-1 rounded-lg text-sm font-bold">
           {{ exam.courseCode }}
         </span>
-        <span class="text-xs px-2 py-1 rounded-full font-medium"
+        <span class="text-xs px-2.5 py-1 rounded-lg font-semibold"
               [class]="exam.examType === 'MIDTERM'
-                ? 'bg-blue-500/20 text-blue-400'
-                : 'bg-amber-500/20 text-amber-400'">
+                ? 'bg-blue-950 text-blue-400'
+                : 'bg-amber-950 text-amber-400'">
           {{ exam.examType }}
         </span>
       </div>
 
-      <h3 class="text-white font-semibold mb-2 group-hover:text-western-purple-light transition-colors">
+      <h3 class="text-white font-semibold text-sm mb-2 group-hover:text-purple-300 transition-colors leading-snug">
         {{ exam.courseName }}
       </h3>
 
-      <div class="flex items-center gap-3 text-sm text-gray-400">
+      <div class="flex items-center gap-2 text-xs text-gray-400">
         <span>{{ exam.term }} {{ exam.year }}</span>
         @if (exam.professor) {
-          <span class="w-1 h-1 rounded-full bg-gray-600"></span>
+          <span class="w-1 h-1 rounded-full bg-gray-700"></span>
           <span>{{ exam.professor }}</span>
         }
       </div>
 
-      <div class="mt-3 text-xs text-gray-500">
+      <div class="mt-3 pt-3 border-t border-gray-800 text-xs text-gray-600">
         Uploaded by {{ exam.uploadedByName }}
       </div>
     </a>
