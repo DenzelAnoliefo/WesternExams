@@ -1,5 +1,7 @@
 # WesternExams
 
+> **Live Website:** [westernexams.com](https://westernexams.com)
+
 WesternExams is a full-stack web application designed to help students share, search, and access past examinations for university courses. The platform allows users to securely register, browse courses, and upload or download previous exam materials.
 
 ## Tech Stack
