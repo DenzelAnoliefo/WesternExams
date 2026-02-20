@@ -21,7 +21,7 @@ The project is split into two parts: a Spring Boot REST API (backend) and an Ang
 **Deployment**
 - Frontend hosted on Vercel
 - Backend hosted on Google Cloud Run
-- PostgreSQL database
+- PostgreSQL database hosted on Supabase
 
 ## Features
 
