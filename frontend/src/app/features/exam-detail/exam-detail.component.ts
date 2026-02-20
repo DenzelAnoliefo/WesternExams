@@ -77,43 +77,20 @@ import { Exam } from '../../core/models/exam.model';
                 <h2 class="text-lg font-bold text-white mb-5 leading-snug">{{ exam.courseName }}</h2>
 
                 <!-- Metadata rows -->
-                <div class="space-y-4 mb-6">
-                  <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center flex-shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p class="text-xs text-gray-500">Term</p>
-                      <p class="text-sm text-white font-medium">{{ exam.term }} {{ exam.year }}</p>
-                    </div>
+                <div class="space-y-3 mb-6">
+                  <div>
+                    <p class="text-xs text-gray-500">Term</p>
+                    <p class="text-sm text-white font-medium">{{ exam.term }} {{ exam.year }}</p>
                   </div>
-
                   @if (exam.professor) {
-                    <div class="flex items-center gap-3">
-                      <div class="w-9 h-9 rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center flex-shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <p class="text-xs text-gray-500">Professor</p>
-                        <p class="text-sm text-white font-medium">{{ exam.professor }}</p>
-                      </div>
+                    <div>
+                      <p class="text-xs text-gray-500">Professor</p>
+                      <p class="text-sm text-white font-medium">{{ exam.professor }}</p>
                     </div>
                   }
-
-                  <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center flex-shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p class="text-xs text-gray-500">Uploaded by</p>
-                      <p class="text-sm text-white font-medium">{{ exam.uploadedByName }}</p>
-                    </div>
+                  <div>
+                    <p class="text-xs text-gray-500">Uploaded by</p>
+                    <p class="text-sm text-white font-medium">{{ exam.uploadedByName }}</p>
                   </div>
                 </div>
 
