@@ -214,12 +214,12 @@ import { AuthService } from '../../core/services/auth.service';
                   <div class="text-xs text-western-purple-soft mt-0.5">Courses</div>
                 </div>
                 <div class="text-center p-3 rounded-xl bg-western-purple border border-western-purple-soft/15">
-                  <div class="text-xl font-black text-white">PDF</div>
-                  <div class="text-xs text-western-purple-soft mt-0.5">Preview</div>
+                  <div class="text-xl font-black text-white">1</div>
+                  <div class="text-xs text-western-purple-soft mt-0.5">Institution</div>
                 </div>
                 <div class="text-center p-3 rounded-xl bg-western-purple border border-western-purple-soft/15">
-                  <div class="text-xl font-black text-white">Free</div>
-                  <div class="text-xs text-western-purple-soft mt-0.5">Always</div>
+                  <div class="text-xl font-black text-white">New</div>
+                  <div class="text-xs text-western-purple-soft mt-0.5">Exams</div>
                 </div>
               </div>
             </div>
