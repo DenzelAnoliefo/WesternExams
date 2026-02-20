@@ -16,14 +16,6 @@ import { AuthService } from '../../core/services/auth.service';
     .hero-overlay {
       background-color: rgba(79, 38, 131, 0.88);
     }
-    .texture-purple {
-      background-color: #4F2683;
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
-    .texture-gold {
-      background-color: #3D3320;
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C4943A' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
     .photo-card {
       background-size: cover;
       background-position: center;
@@ -46,7 +38,7 @@ import { AuthService } from '../../core/services/auth.service';
     }
   `],
   template: `
-    <!-- HERO SECTION - Purple tone with university photo background -->
+    <!-- HERO - Photo bg with purple overlay, left-aligned content -->
     <section class="relative min-h-screen flex items-center overflow-hidden">
       <div class="absolute inset-0 hero-bg"></div>
       <div class="absolute inset-0 hero-overlay"></div>
@@ -80,8 +72,8 @@ import { AuthService } from '../../core/services/auth.service';
       </div>
     </section>
 
-    <!-- FEATURES ROW - Purple textured section -->
-    <section class="texture-purple relative z-10">
+    <!-- FEATURES ROW - Dark purple card on purple bg -->
+    <section class="bg-western-purple">
       <div class="max-w-6xl mx-auto px-6 py-20">
         <div class="bg-western-purple-dark rounded-3xl p-10 sm:p-14 border border-western-purple-soft/15">
           <div class="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10">
@@ -131,62 +123,32 @@ import { AuthService } from '../../core/services/auth.service';
       </div>
     </section>
 
-    <!-- THREE CARDS ROW - Photo-backed cards -->
-    <section class="texture-purple relative pb-0">
+    <!-- THREE CARDS - 1 purple, 2 gold. No icons, just title + text, all left-aligned -->
+    <section class="bg-western-purple">
       <div class="max-w-6xl mx-auto px-6 pb-20">
         <div class="grid md:grid-cols-3 gap-6">
 
-          <!-- Card 1 - Notes photo -->
-          <div class="rounded-3xl overflow-hidden relative h-80 shadow-lg">
-            <div class="absolute inset-0 photo-card photo-notes"></div>
-            <div class="absolute inset-0 bg-western-purple/80"></div>
-            <div class="relative z-10 h-full flex flex-col justify-end p-8">
-              <div class="w-12 h-12 rounded-2xl bg-western-purple-dark flex items-center justify-center mb-4 border border-western-purple-soft/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-white mb-2">Exam Archive</h3>
-              <p class="text-purple-200/80 text-sm leading-relaxed">Browse a growing collection of past exams spanning hundreds of courses across all faculties.</p>
-            </div>
+          <div class="rounded-3xl p-8 bg-western-purple-light">
+            <h3 class="text-xl font-bold text-white mb-3">Exam Archive</h3>
+            <p class="text-purple-200/70 text-sm leading-relaxed">Browse a growing collection of past exams spanning hundreds of courses across all faculties.</p>
           </div>
 
-          <!-- Card 2 - Campus photo (gold) -->
-          <div class="rounded-3xl overflow-hidden relative h-80 shadow-lg">
-            <div class="absolute inset-0 photo-card photo-campus"></div>
-            <div class="absolute inset-0 bg-western-gold-deeper/80"></div>
-            <div class="relative z-10 h-full flex flex-col justify-end p-8">
-              <div class="w-12 h-12 rounded-2xl bg-western-gold-bg flex items-center justify-center mb-4 border border-western-gold/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-western-gold-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-western-gold-light mb-2">Community Driven</h3>
-              <p class="text-western-gold/70 text-sm leading-relaxed">Built by students, for students. Contribute your exams and help others succeed in their courses.</p>
-            </div>
+          <div class="rounded-3xl p-8 bg-western-gold-bg">
+            <h3 class="text-xl font-bold text-western-gold-light mb-3">Community Driven</h3>
+            <p class="text-western-gold-muted text-sm leading-relaxed">Built by students, for students. Contribute your exams and help others succeed in their courses.</p>
           </div>
 
-          <!-- Card 3 - Collab photo (gold) -->
-          <div class="rounded-3xl overflow-hidden relative h-80 shadow-lg">
-            <div class="absolute inset-0 photo-card photo-collab"></div>
-            <div class="absolute inset-0 bg-western-gold-deeper/80"></div>
-            <div class="relative z-10 h-full flex flex-col justify-end p-8">
-              <div class="w-12 h-12 rounded-2xl bg-western-gold-bg flex items-center justify-center mb-4 border border-western-gold/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-western-gold-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-western-gold-light mb-2">100% Free</h3>
-              <p class="text-western-gold/70 text-sm leading-relaxed">No subscriptions, no paywalls. Every exam and resource is completely free to access.</p>
-            </div>
+          <div class="rounded-3xl p-8 bg-western-gold-surface">
+            <h3 class="text-xl font-bold text-western-gold-light mb-3">100% Free</h3>
+            <p class="text-western-gold-muted text-sm leading-relaxed">No subscriptions, no paywalls. Every exam and resource is completely free to access.</p>
           </div>
 
         </div>
       </div>
     </section>
 
-    <!-- BOTTOM SECTION - Gold tone with photos and search -->
-    <section class="texture-gold relative">
+    <!-- PHOTO CARDS ROW - 2 photos side by side -->
+    <section class="bg-western-gold-bg">
       <div class="max-w-6xl mx-auto px-6 py-20">
 
         <div class="text-center mb-14">
@@ -196,77 +158,71 @@ import { AuthService } from '../../core/services/auth.service';
 
         <div class="grid md:grid-cols-2 gap-6 mb-6">
 
-          <!-- Photo card - Library -->
           <div class="rounded-3xl overflow-hidden relative h-72 shadow-lg">
             <div class="absolute inset-0 photo-card photo-library"></div>
             <div class="absolute inset-0 bg-western-purple-dark/75"></div>
             <div class="relative z-10 h-full flex flex-col justify-end p-8">
               <h3 class="text-2xl font-bold text-white mb-2">Smart Search</h3>
-              <p class="text-purple-200/80 leading-relaxed">Search by course code to instantly find the exams you need. Study materials at your fingertips.</p>
+              <p class="text-purple-200 leading-relaxed">Search by course code to instantly find the exams you need. Study materials at your fingertips.</p>
             </div>
           </div>
 
-          <!-- Photo card - Campus -->
           <div class="rounded-3xl overflow-hidden relative h-72 shadow-lg">
             <div class="absolute inset-0 photo-card photo-study"></div>
             <div class="absolute inset-0 bg-western-gold-deeper/75"></div>
             <div class="relative z-10 h-full flex flex-col justify-end p-8">
               <h3 class="text-2xl font-bold text-western-gold-light mb-2">Growing Every Day</h3>
-              <p class="text-western-gold/80 leading-relaxed">Our library is constantly expanding thanks to contributions from students across all faculties.</p>
+              <p class="text-western-gold leading-relaxed">Our library is constantly expanding thanks to contributions from students across all faculties.</p>
             </div>
           </div>
 
         </div>
 
-        <!-- Search + Stats row -->
+        <!-- BOTTOM ROW - Search card + Stats card -->
         <div class="grid md:grid-cols-2 gap-6">
 
-          <!-- Search card -->
-          <div class="rounded-3xl p-10 bg-western-gold-surface border border-western-gold/10 shadow-lg">
-            <div class="w-14 h-14 rounded-2xl bg-western-gold-bg flex items-center justify-center mb-6 border border-western-gold/20">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-western-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-              </svg>
-            </div>
-            <h3 class="text-2xl font-bold text-western-gold-light mb-3">Find Your Exam</h3>
-            <p class="text-western-gold-muted leading-relaxed mb-6">Enter a course code to get started.</p>
-            <div class="flex items-center gap-3">
-              <input
-                type="text"
-                [(ngModel)]="searchQuery"
-                (keyup.enter)="onSearch()"
-                placeholder="Try CS1027..."
-                class="flex-1 px-4 py-3 rounded-xl bg-western-gold-bg border border-western-gold/20 text-white placeholder-western-gold-muted focus:outline-none focus:ring-2 focus:ring-western-gold focus:border-transparent transition-all"
-              />
-              <button
-                (click)="onSearch()"
-                class="px-6 py-3 bg-western-gold text-western-gold-deeper font-semibold rounded-xl hover:bg-western-gold-light transition-colors">
-                Search
-              </button>
+          <div class="rounded-3xl overflow-hidden relative shadow-lg">
+            <div class="absolute inset-0 photo-card photo-notes"></div>
+            <div class="absolute inset-0 bg-western-gold-deeper/85"></div>
+            <div class="relative z-10 p-10">
+              <h3 class="text-2xl font-bold text-western-gold-light mb-3">Find Your Exam</h3>
+              <p class="text-western-gold-muted leading-relaxed mb-6">Enter a course code to get started.</p>
+              <div class="flex items-center gap-3">
+                <input
+                  type="text"
+                  [(ngModel)]="searchQuery"
+                  (keyup.enter)="onSearch()"
+                  placeholder="Try CS1027..."
+                  class="flex-1 px-4 py-3 rounded-xl bg-western-gold-bg border border-western-gold/20 text-white placeholder-western-gold-muted focus:outline-none focus:ring-2 focus:ring-western-gold focus:border-transparent transition-all"
+                />
+                <button
+                  (click)="onSearch()"
+                  class="px-6 py-3 bg-western-gold text-western-gold-deeper font-semibold rounded-xl hover:bg-western-gold-light transition-colors">
+                  Search
+                </button>
+              </div>
             </div>
           </div>
 
-          <!-- Stats card -->
-          <div class="rounded-3xl p-10 bg-western-purple-dark border border-western-purple-soft/15 shadow-lg">
-            <div class="w-14 h-14 rounded-2xl bg-western-purple flex items-center justify-center mb-6 border border-western-purple-soft/20">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-              </svg>
-            </div>
-            <h3 class="text-2xl font-bold text-white mb-3">By The Numbers</h3>
-            <p class="text-purple-300/50 leading-relaxed mb-6">A resource that keeps growing.</p>
-            <div class="grid grid-cols-3 gap-4">
-              <div class="text-center p-4 rounded-xl bg-western-purple border border-western-purple-soft/15">
-                <div class="text-2xl font-black text-white">250+</div>
-                <div class="text-xs text-purple-300/50 mt-1">Courses</div>
-              </div>
-              <div class="text-center p-4 rounded-xl bg-western-purple border border-western-purple-soft/15">
-                <div class="text-2xl font-black text-white">PDF</div>
-                <div class="text-xs text-purple-300/50 mt-1">Preview</div>
-              </div>
-              <div class="text-center p-4 rounded-xl bg-western-purple border border-western-purple-soft/15">
-                <div class="text-2xl font-black text-white">Free</div>
-                <div class="text-xs text-purple-300/50 mt-1">Always</div>
+          <div class="rounded-3xl overflow-hidden relative shadow-lg">
+            <div class="absolute inset-0 photo-card photo-campus"></div>
+            <div class="absolute inset-0 bg-western-purple-dark/85"></div>
+            <div class="relative z-10 p-10">
+              <h3 class="text-2xl font-bold text-white mb-3">By The Numbers</h3>
+              <p class="text-purple-300/60 leading-relaxed mb-6">A resource that keeps growing.</p>
+              <div class="grid grid-cols-3 gap-4">
+                <div class="text-center p-4 rounded-xl bg-western-purple border border-western-purple-soft/15">
+                  <div class="text-2xl font-black text-white">250+</div>
+                  <div class="text-xs text-purple-300/50 mt-1">Courses</div>
+                </div>
+                <div class="text-center p-4 rounded-xl bg-western-purple border border-western-purple-soft/15">
+                  <div class="text-2xl font-black text-white">PDF</div>
+                  <div class="text-xs text-purple-300/50 mt-1">Preview</div>
+                </div>
+                <div class="text-center p-4 rounded-xl bg-western-purple border border-western-purple-soft/15">
+                  <div class="text-2xl font-black text-white">Free</div>
+                  <div class="text-xs text-purple-300/50 mt-1">Always</div>
+                </div>
               </div>
             </div>
           </div>
