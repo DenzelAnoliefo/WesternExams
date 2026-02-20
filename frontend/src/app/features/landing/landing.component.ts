@@ -60,8 +60,6 @@ import { AuthService } from '../../core/services/auth.service';
           </div>
 
           <h1 class="text-5xl sm:text-7xl font-black text-white mb-6 tracking-tight leading-[1.1]">
-            Welcome to
-            <br>
             WesternExams
           </h1>
 
