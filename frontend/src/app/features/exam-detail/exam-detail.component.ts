@@ -10,78 +10,148 @@ import { Exam } from '../../core/models/exam.model';
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
-    <div class="pt-20 min-h-screen">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="pt-24 pb-16 min-h-screen">
+      <div class="max-w-6xl mx-auto px-6">
+
         @if (exam) {
           <!-- Back link -->
-          <a routerLink="/search" class="text-gray-400 hover:text-white transition-colors mb-6 inline-block">
-            &larr; Back to search
+          <a routerLink="/search"
+             class="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition-colors mb-8">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to search
           </a>
 
-          <div class="flex flex-col lg:flex-row gap-8">
+          <div class="flex flex-col lg:flex-row gap-6">
+
             <!-- PDF Viewer -->
-            <div class="flex-1">
-              <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+            <div class="flex-1 min-w-0">
+              <div class="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden">
                 @if (pdfUrl) {
                   <iframe
                     [src]="pdfUrl"
                     class="w-full h-[80vh]"
                     title="Exam PDF">
                   </iframe>
+                } @else if (pdfError) {
+                  <div class="flex flex-col items-center justify-center h-[50vh]">
+                    <div class="w-14 h-14 rounded-2xl bg-gray-800 border border-gray-700 flex items-center justify-center mb-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                      </svg>
+                    </div>
+                    <p class="text-gray-400 text-sm font-medium mb-1">Could not load PDF preview</p>
+                    <a [href]="downloadUrl" target="_blank" rel="noopener noreferrer"
+                       class="text-western-purple-light text-sm hover:underline">
+                      Download instead
+                    </a>
+                  </div>
                 } @else {
-                  <div class="flex items-center justify-center h-[80vh]">
+                  <div class="flex flex-col items-center justify-center h-[50vh]">
                     <div class="animate-spin w-8 h-8 border-2 border-western-purple border-t-transparent rounded-full"></div>
+                    <p class="text-gray-500 mt-4 text-sm">Loading preview...</p>
                   </div>
                 }
               </div>
             </div>
 
             <!-- Metadata Panel -->
-            <div class="lg:w-80 flex-shrink-0">
-              <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 sticky top-20">
-                <div class="mb-4">
-                  <span class="bg-western-purple/20 text-western-purple-light px-3 py-1 rounded-lg text-sm font-bold">
+            <div class="lg:w-72 flex-shrink-0">
+              <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 sticky top-24">
+
+                <!-- Badges -->
+                <div class="flex items-center gap-2 mb-4">
+                  <span class="bg-western-purple-dark text-purple-300 px-3 py-1 rounded-lg text-sm font-bold">
                     {{ exam.courseCode }}
                   </span>
-                  <span class="ml-2 text-xs px-2 py-1 rounded-full font-medium"
+                  <span class="text-xs px-2.5 py-1 rounded-lg font-semibold"
                         [class]="exam.examType === 'MIDTERM'
-                          ? 'bg-blue-500/20 text-blue-400'
-                          : 'bg-amber-500/20 text-amber-400'">
+                          ? 'bg-blue-950 text-blue-400'
+                          : 'bg-amber-950 text-amber-400'">
                     {{ exam.examType }}
                   </span>
                 </div>
 
-                <h2 class="text-xl font-bold text-white mb-4">{{ exam.courseName }}</h2>
+                <!-- Course name -->
+                <h2 class="text-lg font-bold text-white mb-5 leading-snug">{{ exam.courseName }}</h2>
 
-                <dl class="space-y-3 text-sm">
-                  <div>
-                    <dt class="text-gray-500">Term</dt>
-                    <dd class="text-white">{{ exam.term }} {{ exam.year }}</dd>
-                  </div>
-                  @if (exam.professor) {
+                <!-- Metadata rows -->
+                <div class="space-y-4 mb-6">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center flex-shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                      </svg>
+                    </div>
                     <div>
-                      <dt class="text-gray-500">Professor</dt>
-                      <dd class="text-white">{{ exam.professor }}</dd>
+                      <p class="text-xs text-gray-500">Term</p>
+                      <p class="text-sm text-white font-medium">{{ exam.term }} {{ exam.year }}</p>
+                    </div>
+                  </div>
+
+                  @if (exam.professor) {
+                    <div class="flex items-center gap-3">
+                      <div class="w-9 h-9 rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="text-xs text-gray-500">Professor</p>
+                        <p class="text-sm text-white font-medium">{{ exam.professor }}</p>
+                      </div>
                     </div>
                   }
-                  <div>
-                    <dt class="text-gray-500">Uploaded by</dt>
-                    <dd class="text-white">{{ exam.uploadedByName }}</dd>
-                  </div>
-                </dl>
 
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center flex-shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="text-xs text-gray-500">Uploaded by</p>
+                      <p class="text-sm text-white font-medium">{{ exam.uploadedByName }}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Download button -->
                 <a [href]="downloadUrl" target="_blank" rel="noopener noreferrer"
-                   class="mt-6 block w-full text-center bg-western-purple hover:bg-western-purple-light text-white font-medium py-3 rounded-lg transition-colors">
+                   class="flex items-center justify-center gap-2 w-full bg-western-purple hover:bg-western-purple-light text-white font-medium py-3 rounded-lg transition-colors text-sm">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                  </svg>
                   Download PDF
                 </a>
+
               </div>
             </div>
+
           </div>
+
         } @else if (loading) {
-          <div class="text-center py-20">
-            <div class="animate-spin w-8 h-8 border-2 border-western-purple border-t-transparent rounded-full mx-auto"></div>
+          <div class="flex flex-col items-center justify-center py-32">
+            <div class="animate-spin w-8 h-8 border-2 border-western-purple border-t-transparent rounded-full"></div>
+            <p class="text-gray-500 mt-4 text-sm">Loading exam...</p>
+          </div>
+        } @else {
+          <div class="flex flex-col items-center justify-center py-32">
+            <div class="w-14 h-14 rounded-2xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-1">Exam not found</h3>
+            <p class="text-gray-500 text-sm mb-6">This exam may have been removed or the link is invalid.</p>
+            <a routerLink="/search"
+               class="text-sm text-western-purple-light hover:underline">
+              Back to search
+            </a>
           </div>
         }
+
       </div>
     </div>
   `
@@ -91,6 +161,7 @@ export class ExamDetailComponent implements OnInit, OnDestroy {
   pdfUrl: SafeResourceUrl | null = null;
   downloadUrl = '';
   loading = true;
+  pdfError = false;
   private blobUrl: string | null = null;
 
   constructor(
@@ -117,6 +188,9 @@ export class ExamDetailComponent implements OnInit, OnDestroy {
       next: (blob) => {
         this.blobUrl = URL.createObjectURL(blob);
         this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.blobUrl);
+      },
+      error: () => {
+        this.pdfError = true;
       }
     });
   }

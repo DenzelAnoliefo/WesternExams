@@ -28,14 +28,19 @@ import { debounceTime, Subject, switchMap } from 'rxjs';
 
         <!-- Drop zone -->
         <div
-          class="border-2 border-dashed rounded-xl p-8 text-center mb-5 transition-colors cursor-pointer"
+          class="border-2 border-dashed rounded-2xl p-8 text-center mb-5 transition-colors cursor-pointer"
           [class]="selectedFile ? 'border-western-purple bg-western-purple-dark' : 'border-gray-700 hover:border-gray-600'"
           (click)="fileInput.click()"
           (dragover)="$event.preventDefault()"
           (drop)="onDrop($event)">
           @if (selectedFile) {
+            <div class="w-10 h-10 rounded-xl bg-western-purple flex items-center justify-center mx-auto mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
             <p class="text-purple-300 font-medium text-sm">{{ selectedFile.name }}</p>
-            <p class="text-sm text-gray-400 mt-1">{{ (selectedFile.size / 1024 / 1024).toFixed(1) }} MB</p>
+            <p class="text-xs text-gray-400 mt-1">{{ (selectedFile.size / 1024 / 1024).toFixed(1) }} MB</p>
           } @else {
             <div class="w-10 h-10 rounded-xl bg-gray-800 border border-gray-700 flex items-center justify-center mx-auto mb-3">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -60,7 +65,7 @@ import { debounceTime, Subject, switchMap } from 'rxjs';
             class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-western-purple focus:border-transparent"
           />
           @if (showSuggestions && courseSuggestions.length > 0) {
-            <div class="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-700 rounded-lg overflow-hidden z-10 max-h-40 overflow-y-auto">
+            <div class="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-800 rounded-lg overflow-hidden z-10 max-h-40 overflow-y-auto shadow-lg">
               @for (course of courseSuggestions; track course.code) {
                 <button (click)="selectCourse(course)"
                         class="w-full text-left px-3 py-2 text-sm text-white hover:bg-gray-700 transition-colors">
