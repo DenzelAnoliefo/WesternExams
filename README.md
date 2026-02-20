@@ -56,8 +56,6 @@ You can spin up the backend and database simultaneously using Docker Compose.
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
-
-MIT License. See [LICENSE](LICENSE) for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
 Not affiliated with Western University.
