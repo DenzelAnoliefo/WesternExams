@@ -218,7 +218,7 @@ import { AuthService } from '../../core/services/auth.service';
                   <div class="text-xs text-western-purple-soft mt-0.5">Institution</div>
                 </div>
                 <div class="text-center p-3 rounded-xl bg-western-purple border border-western-purple-soft/15">
-                  <div class="text-xl font-black text-white">NNEW</div>
+                  <div class="text-xl font-black text-white">New</div>
                   <div class="text-xs text-western-purple-soft mt-0.5">Exams</div>
                 </div>
               </div>
