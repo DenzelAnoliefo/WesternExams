@@ -1,134 +1,62 @@
 # WesternExams
 
-WesternExams is an open-source web application that lets Western University students search, preview, and upload past exams. Students can browse exams by course code, term, faculty, or professor, view PDFs directly in the browser, and contribute their own exam files to help others.
-
-The project is split into two parts: a Spring Boot REST API (backend) and an Angular single-page application (frontend).
+WesternExams is a full-stack web application designed to help students share, search, and access past examinations for university courses. The platform allows users to securely register, browse courses, and upload or download previous exam materials.
 
 ## Tech Stack
 
-**Backend**
-- Java 17, Spring Boot 3.2
-- PostgreSQL 16 with Flyway migrations
-- Spring Security with stateless JWT authentication
-- AWS S3 for PDF storage (with a local mock for development)
-- Spring Mail for welcome emails on registration
+* **Frontend:** Angular, TypeScript, Tailwind CSS
+* **Backend:** Java, Spring Boot, Spring Security (JWT for authentication)
+* **Database:** PostgreSQL (with Flyway for database migrations)
+* **Storage:** Amazon S3 (for hosting uploaded exam files)
+* **Infrastructure:** Docker, Docker Compose
 
-**Frontend**
-- Angular 17 with standalone components and lazy-loaded routes
-- Tailwind CSS 3.4
-- RxJS for reactive data handling
+## Prerequisites
 
-**Deployment**
-- Frontend hosted on Vercel
-- Backend hosted on Google Cloud Run
-- PostgreSQL database hosted on Supabase
-
-## Features
-
-- Search exams by course code, name, faculty, level, term, or year
-- In-browser PDF preview with download option
-- Upload exams as PDF files (max 20MB) with course, term, year, professor, and exam type metadata
-- User registration and login with JWT-based authentication
-- Role-based access control (Student and Admin roles)
-- Course autocomplete powered by a seeded course database
-- Paginated search results with sidebar filters
+To run this project locally, you will need the following installed on your system:
+* Java 17 or higher
+* Maven
+* Node.js and npm
+* Docker and Docker Compose
+* An active AWS account with an S3 bucket configured
 
 ## Project Structure
 
-```
-western-exams/
-  backend/               Spring Boot API (Maven)
-  frontend/              Angular SPA
-  docker-compose.yml     PostgreSQL dev database
-```
+* `backend/`: Contains the Spring Boot Java application. Handles the REST API, user authentication, database interactions, and AWS S3 file uploads.
+* `frontend/`: Contains the Angular application. Handles the user interface, routing, and client-side logic.
+* `docker-compose.yml`: Defines the containerized environment for the database and backend services.
 
-### Backend
+## Setup Instructions
 
-```
-backend/src/main/java/ca/uwo/westernexams/
-  auth/          Login and registration (JWT issuance)
-  user/          User entity, repository, roles
-  course/        Course entity, search endpoint
-  exam/          Exam entity, search, upload, download, delete
-  jwt/           Token generation and validation filter
-  s3/            S3 file storage (real and mock implementations)
-  security/      Security config, CORS, filter chain
-  email/         Welcome email service
-  exception/     Global error handling
-```
+### 1. Database and Environment Configuration
 
-### Frontend
+**IMPORTANT:** Before starting the application, you must configure your environment variables. Update the `backend/src/main/resources/application.yml` file with your PostgreSQL database credentials and your AWS S3 access keys. 
 
-```
-frontend/src/app/
-  core/
-    guards/          Auth guard (redirects unauthenticated users)
-    interceptors/    Auth interceptor (attaches JWT to requests)
-    models/          TypeScript interfaces (User, Exam, Course)
-    services/        API services (auth, exam, course)
-  features/
-    landing/         Landing page
-    auth/            Login and register pages
-    search/          Browse page with filters and exam cards
-    exam-detail/     Exam viewer with PDF preview
-    upload/          Upload modal
-  shared/
-    components/      Navbar and footer
-```
+### 2. Running with Docker (Recommended)
 
-## API Endpoints
+You can spin up the backend and database simultaneously using Docker Compose. 
 
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| POST | /api/v1/auth/register | No | Create account |
-| POST | /api/v1/auth/login | No | Login, returns JWT |
-| GET | /api/v1/exams | No | Search and list exams (paginated) |
-| GET | /api/v1/exams/:id | No | Get exam details |
-| GET | /api/v1/exams/:id/download | No | Download exam PDF |
-| POST | /api/v1/exams | Yes | Upload exam (multipart) |
-| DELETE | /api/v1/exams/:id | Yes | Delete exam (owner or admin) |
-| GET | /api/v1/courses?q= | No | Search courses |
+1. Navigate to the root directory of the project.
+2. Run the following command:
+   `docker-compose up --build`
 
-## Getting Started
+### 3. Running Locally (Without Docker)
 
-### Prerequisites
-
-- Java 17
-- Node.js 18+
-- Docker (for PostgreSQL)
-
-### Database
-
-Start the PostgreSQL container:
-
-```bash
-docker-compose up -d
-```
-
-This runs PostgreSQL on port 5433. Flyway will handle schema creation and course seeding automatically when the backend starts.
-
-### Backend
-
-```bash
-cd backend
-./mvnw spring-boot:run
-```
-
-The API starts on http://localhost:8080. In development mode, S3 is mocked locally so no AWS credentials are needed.
-
-### Frontend
-
-```bash
-cd frontend
-npm install
-ng serve
-```
-
-The app starts on http://localhost:4200.
-
-> **Important:** The frontend's environment config points to the production API by default. To develop against the local backend, update the `apiUrl` in `frontend/src/environments/environment.ts` to `http://localhost:8080/api/v1`.
+**Backend:**
+1. Navigate to the `backend` directory.
+2. Run the application using the Maven wrapper:
+   `./mvnw spring-boot:run`
+   
+**Frontend:**
+1. Navigate to the `frontend` directory.
+2. Install the necessary dependencies:
+   `npm install`
+3. Start the development server:
+   `npm start`
+4. The frontend will be accessible at `http://localhost:4200`.
 
 ## License
+
+This project is licensed under the MIT License. See the LICENSE file for more details.
 
 MIT License. See [LICENSE](LICENSE) for details.
 
