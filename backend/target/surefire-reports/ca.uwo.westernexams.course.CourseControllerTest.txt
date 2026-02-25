@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: ca.uwo.westernexams.course.CourseControllerTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.186 s -- in ca.uwo.westernexams.course.CourseControllerTest

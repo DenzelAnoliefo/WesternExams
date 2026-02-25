@@ -1,0 +1,20 @@
+jwt:
+  secret-key: "westernexams-test-secret-key-must-be-at-least-256-bits-long-for-hmac-sha"
+  expiration-days: 1
+
+spring:
+  mail:
+    username: test@example.com
+
+aws:
+  region: us-east-1
+  s3:
+    mock: true
+    buckets:
+      exams: test-bucket
+
+cors:
+  allowed-origins: "http://localhost:4200"
+  allowed-methods: "*"
+  allowed-headers: "*"
+  exposed-headers: "Authorization"

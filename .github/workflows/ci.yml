@@ -21,14 +21,9 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      - name: Build with Maven
+      - name: Build and test
         working-directory: backend
-        run: mvn package -DskipTests -B
-
-      # Uncomment when tests are added to backend/src/test/
-      # - name: Run tests
-      #   working-directory: backend
-      #   run: mvn verify -B
+        run: mvn verify -B
 
   frontend:
     name: Frontend Build

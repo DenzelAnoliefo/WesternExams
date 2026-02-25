@@ -1,0 +1,9 @@
+/Users/zelanoliefo/Documents/western-exams/backend/src/test/java/ca/uwo/westernexams/s3/S3ServiceTest.java
+/Users/zelanoliefo/Documents/western-exams/backend/src/test/java/ca/uwo/westernexams/exam/ExamControllerTest.java
+/Users/zelanoliefo/Documents/western-exams/backend/src/test/java/ca/uwo/westernexams/jwt/JWTUtilTest.java
+/Users/zelanoliefo/Documents/western-exams/backend/src/test/java/ca/uwo/westernexams/course/CourseControllerTest.java
+/Users/zelanoliefo/Documents/western-exams/backend/src/test/java/ca/uwo/westernexams/course/CourseServiceTest.java
+/Users/zelanoliefo/Documents/western-exams/backend/src/test/java/ca/uwo/westernexams/email/EmailServiceTest.java
+/Users/zelanoliefo/Documents/western-exams/backend/src/test/java/ca/uwo/westernexams/exam/ExamServiceTest.java
+/Users/zelanoliefo/Documents/western-exams/backend/src/test/java/ca/uwo/westernexams/auth/AuthenticationServiceTest.java
+/Users/zelanoliefo/Documents/western-exams/backend/src/test/java/ca/uwo/westernexams/auth/AuthenticationControllerTest.java
