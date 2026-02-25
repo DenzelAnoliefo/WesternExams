@@ -35,9 +35,6 @@ import { Exam } from '../../../core/models/exam.model';
         }
       </div>
 
-      <div class="mt-3 pt-3 border-t border-gray-800 text-xs text-gray-600">
-        Uploaded by {{ exam.uploadedByName }}
-      </div>
     </a>
   `
 })
