@@ -29,10 +29,7 @@ import { Exam } from '../../../core/models/exam.model';
 
       <div class="flex items-center gap-2 text-xs text-gray-400">
         <span>{{ exam.term }} {{ exam.year }}</span>
-        @if (exam.professor) {
-          <span class="w-1 h-1 rounded-full bg-gray-700"></span>
-          <span>{{ exam.professor }}</span>
-        }
+        
       </div>
 
     </a>
