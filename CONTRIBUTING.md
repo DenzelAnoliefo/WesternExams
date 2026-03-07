@@ -30,8 +30,3 @@ If you encounter a problem or have an idea for a new feature, please open an iss
 * Expected behavior versus actual behavior.
 * Relevant environment details (like your operating system and browser).
 
-## Code Standards
-
-* Follow standard TypeScript and Angular style guides for the frontend.
-* Follow standard Java and Spring Boot conventions for the backend.
-* Ensure all database migrations are properly versioned using Flyway.
