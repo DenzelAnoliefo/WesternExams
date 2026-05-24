@@ -31,7 +31,8 @@ To run this project locally, you will need the following installed on your syste
 
 ### 1. Database and Environment Configuration
 
-**IMPORTANT:** Before starting the application, you must configure your environment variables. Update the `backend/src/main/resources/application.yml` file with your PostgreSQL database credentials and your AWS S3 access keys. 
+> [!IMPORTANT]
+> Before starting the application, you must configure your environment variables. Update the `backend/src/main/resources/application.yml` file with your PostgreSQL database credentials and your AWS S3 access keys. 
 
 ### 2. Running with Docker (Recommended)
 
