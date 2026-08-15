@@ -88,10 +88,6 @@ import { Exam } from '../../core/models/exam.model';
                       <p class="text-sm text-white font-medium">{{ exam.professor }}</p>
                     </div>
                   }
-                  <div>
-                    <p class="text-xs text-gray-500">Uploaded by</p>
-                    <p class="text-sm text-white font-medium">{{ exam.uploadedByName }}</p>
-                  </div>
                 </div>
 
                 <!-- Download button -->
