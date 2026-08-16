@@ -43,6 +43,17 @@ public class ExamController {
         return examService.getExam(id);
     }
 
+    /** Public: first page only, for the preview on the exam detail page. */
+    @GetMapping("/{id}/preview")
+    public ResponseEntity<byte[]> previewExam(@PathVariable UUID id) {
+        byte[] pdf = examService.previewExam(id);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "application/pdf")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=preview.pdf")
+                .body(pdf);
+    }
+
+    /** Authenticated: the complete exam PDF. */
     @GetMapping("/{id}/download")
     public ResponseEntity<byte[]> downloadExam(@PathVariable UUID id) {
         byte[] pdf = examService.downloadExam(id);

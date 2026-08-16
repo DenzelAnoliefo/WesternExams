@@ -14,6 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.pdmodel.PDDocument;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -61,11 +65,39 @@ public class ExamService {
                         "Exam not found with id: " + id));
     }
 
+    /**
+     * Full exam PDF. Callers must be authenticated: this is the gated artifact.
+     */
     public byte[] downloadExam(UUID id) {
         Exam exam = examRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Exam not found with id: " + id));
         return s3Service.getObject(s3Buckets.getExams(), exam.getS3Key());
+    }
+
+    /**
+     * First page only, for the public preview on the exam detail page.
+     *
+     * The remaining pages are dropped server-side rather than hidden in the
+     * viewer, so an unauthenticated caller never receives them even by
+     * requesting this endpoint directly.
+     */
+    public byte[] previewExam(UUID id) {
+        byte[] full = downloadExam(id);
+
+        try (PDDocument source = Loader.loadPDF(full);
+             PDDocument firstPage = new PDDocument();
+             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+
+            if (source.getNumberOfPages() > 0) {
+                firstPage.addPage(source.getPage(0));
+            }
+
+            firstPage.save(out);
+            return out.toByteArray();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to build exam preview", e);
+        }
     }
 
     @Transactional

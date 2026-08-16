@@ -7,6 +7,9 @@ import ca.uwo.westernexams.s3.S3Buckets;
 import ca.uwo.westernexams.s3.S3Service;
 import ca.uwo.westernexams.user.Role;
 import ca.uwo.westernexams.user.User;
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -20,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.access.AccessDeniedException;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -143,6 +147,34 @@ class ExamServiceTest {
         byte[] result = examService.downloadExam(exam.getId());
 
         assertThat(result).isEqualTo(pdfBytes);
+    }
+
+    @Test
+    void previewExam_returnsOnlyTheFirstPage() throws Exception {
+        User user = buildUser(Role.STUDENT);
+        Exam exam = buildExam(user);
+
+        // A real three-page PDF, so the page count is actually exercised.
+        byte[] threePages;
+        try (PDDocument doc = new PDDocument();
+             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            doc.addPage(new PDPage());
+            doc.addPage(new PDPage());
+            doc.addPage(new PDPage());
+            doc.save(out);
+            threePages = out.toByteArray();
+        }
+
+        when(examRepository.findById(exam.getId())).thenReturn(Optional.of(exam));
+        when(s3Buckets.getExams()).thenReturn("test-bucket");
+        when(s3Service.getObject("test-bucket", "exams/CS1027/test.pdf")).thenReturn(threePages);
+
+        byte[] preview = examService.previewExam(exam.getId());
+
+        try (PDDocument result = Loader.loadPDF(preview)) {
+            assertThat(result.getNumberOfPages()).isEqualTo(1);
+        }
+        assertThat(preview).isNotEqualTo(threePages);
     }
 
     @Test

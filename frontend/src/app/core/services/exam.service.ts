@@ -31,8 +31,14 @@ export class ExamService {
     return `${this.apiUrl}/${id}/download`;
   }
 
+  /** Full PDF. Requires authentication. */
   downloadExamBlob(id: string): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/${id}/download`, { responseType: 'blob' });
+  }
+
+  /** First page only. Public, so the preview renders for signed-out visitors. */
+  previewExamBlob(id: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/${id}/preview`, { responseType: 'blob' });
   }
 
   uploadExam(metadata: any, file: File): Observable<Exam> {

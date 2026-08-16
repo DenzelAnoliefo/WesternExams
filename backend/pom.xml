@@ -88,6 +88,14 @@
             <version>2.25.16</version>
         </dependency>
 
+        <!-- Extracts the first page of an exam for the public preview, so the
+             full PDF can stay behind authentication. -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
         <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

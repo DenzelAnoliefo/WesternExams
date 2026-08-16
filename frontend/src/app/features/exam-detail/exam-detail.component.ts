@@ -56,6 +56,12 @@ import { Exam } from '../../core/models/exam.model';
                   </div>
                 }
               </div>
+
+              @if (pdfUrl && !isAuthenticated()) {
+                <p class="text-center text-sm text-gray-500 mt-3">
+                  Showing the first page. Sign in free to read the full exam.
+                </p>
+              }
             </div>
 
             <!-- Metadata Panel -->
@@ -168,7 +174,19 @@ export class ExamDetailComponent implements OnInit, OnDestroy {
       return;
     }
 
-    window.open(this.downloadUrl, '_blank', 'noopener');
+    // /download is authenticated, so it has to go through HttpClient to pick
+    // up the auth interceptor's token. A plain window.open would send no
+    // Authorization header and come back 401.
+    this.examService.downloadExamBlob(this.examId).subscribe({
+      next: (blob) => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${this.exam?.courseCode ?? 'exam'}.pdf`;
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -195,7 +213,14 @@ export class ExamDetailComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.examService.downloadExamBlob(id).subscribe({
+    // Signed-in users get the whole PDF inline; everyone else gets the public
+    // single-page preview, which is what keeps the page useful to a visitor
+    // arriving from search.
+    const pdf$ = this.auth.isAuthenticated()
+      ? this.examService.downloadExamBlob(id)
+      : this.examService.previewExamBlob(id);
+
+    pdf$.subscribe({
       next: (blob) => {
         this.blobUrl = URL.createObjectURL(blob);
         this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.blobUrl);

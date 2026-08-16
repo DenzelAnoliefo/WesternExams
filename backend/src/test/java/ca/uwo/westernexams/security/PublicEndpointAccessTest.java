@@ -89,11 +89,11 @@ class PublicEndpointAccessTest {
     }
 
     @Test
-    void downloadExam_isPublic_soThePreviewRendersForSignedOutVisitors() throws Exception {
+    void previewExam_isPublic_soTheFirstPageRendersForSignedOutVisitors() throws Exception {
         UUID id = UUID.randomUUID();
-        when(examService.downloadExam(id)).thenReturn(new byte[]{1, 2, 3});
+        when(examService.previewExam(id)).thenReturn(new byte[]{1, 2, 3});
 
-        mockMvc.perform(get("/api/v1/exams/{id}/download", id))
+        mockMvc.perform(get("/api/v1/exams/{id}/preview", id))
                 .andExpect(status().isOk());
     }
 
