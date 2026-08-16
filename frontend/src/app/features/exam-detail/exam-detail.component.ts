@@ -101,13 +101,23 @@ import { Exam } from '../../core/models/exam.model';
                 <!-- Download button. Signed-out visitors are sent to login and
                      returned here afterwards, so the prompt lands after they
                      have already seen the exam. -->
-                <button type="button" (click)="onDownload()"
-                        class="flex items-center justify-center gap-2 w-full bg-western-purple hover:bg-western-purple-light text-white font-medium py-3 rounded-lg transition-colors text-sm">
+                <button type="button" (click)="onDownload()" [disabled]="downloading"
+                        class="flex items-center justify-center gap-2 w-full bg-western-purple hover:bg-western-purple-light disabled:opacity-60 text-white font-medium py-3 rounded-lg transition-colors text-sm">
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                   </svg>
-                  {{ isAuthenticated() ? 'Download PDF' : 'Sign in to download' }}
+                  @if (downloading) {
+                    Preparing download...
+                  } @else {
+                    {{ isAuthenticated() ? 'Download PDF' : 'Sign in to download' }}
+                  }
                 </button>
+
+                @if (downloadError) {
+                  <p class="text-red-400 text-xs mt-2 text-center">
+                    Download failed. Please try again.
+                  </p>
+                }
 
               </div>
             </div>
@@ -142,9 +152,10 @@ import { Exam } from '../../core/models/exam.model';
 export class ExamDetailComponent implements OnInit, OnDestroy {
   exam: Exam | null = null;
   pdfUrl: SafeResourceUrl | null = null;
-  downloadUrl = '';
   loading = true;
   pdfError = false;
+  downloading = false;
+  downloadError = false;
   private blobUrl: string | null = null;
   private examId = '';
 
@@ -176,23 +187,48 @@ export class ExamDetailComponent implements OnInit, OnDestroy {
 
     // /download is authenticated, so it has to go through HttpClient to pick
     // up the auth interceptor's token. A plain window.open would send no
-    // Authorization header and come back 401.
+    // Authorization header and come back 403.
+    this.downloading = true;
+    this.downloadError = false;
+
     this.examService.downloadExamBlob(this.examId).subscribe({
       next: (blob) => {
+        this.downloading = false;
+
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `${this.exam?.courseCode ?? 'exam'}.pdf`;
+        link.download = this.downloadFilename();
         link.click();
-        URL.revokeObjectURL(url);
+
+        // click() is handled asynchronously, so revoking straight away can
+        // pull the blob before the browser has read it. Release on the next
+        // task instead.
+        setTimeout(() => URL.revokeObjectURL(url));
+      },
+      error: () => {
+        this.downloading = false;
+        this.downloadError = true;
       }
     });
+  }
+
+  /** e.g. CS3340-midterm-fall-2026.pdf */
+  private downloadFilename(): string {
+    const exam = this.exam;
+    if (!exam) {
+      return 'exam.pdf';
+    }
+
+    return [exam.courseCode, exam.examType, exam.term, exam.year]
+      .filter(Boolean)
+      .join('-')
+      .toLowerCase() + '.pdf';
   }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id')!;
     this.examId = id;
-    this.downloadUrl = this.examService.getDownloadUrl(id);
 
     this.examService.getExam(id).subscribe({
       next: (exam) => {

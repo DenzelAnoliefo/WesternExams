@@ -37,6 +37,9 @@ public class SitemapController {
         appendUrl(xml, SITE + "/", null, "weekly", "1.0");
         appendUrl(xml, SITE + "/search", null, "daily", "0.8");
 
+        // findAll() is fine at the current scale. The sitemap spec caps a
+        // single file at 50,000 URLs, so past that this needs to page and emit
+        // a sitemap index rather than one document.
         for (Exam exam : examRepository.findAll()) {
             String lastmod = exam.getCreatedAt() == null ? null
                     : W3C.format(exam.getCreatedAt().toInstant(ZoneOffset.UTC));
