@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Auth pages carry no content worth ranking and are already cluttering the index.
+Disallow: /login
+Disallow: /register
+
+# Search results with query strings are near-duplicates of /search.
+Disallow: /search?
+
+Sitemap: https://westernexams.com/sitemap.xml

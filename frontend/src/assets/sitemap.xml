@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Only publicly reachable, content-bearing URLs belong here.
+
+  /search and /exams/:id are intentionally omitted: both sit behind authGuard
+  (see src/app/app.routes.ts), so an unauthenticated crawler is redirected to
+  /login. Listing them would submit URLs that resolve to a redirect, which
+  Google treats as a soft 404 and which drags on site quality signals.
+
+  Add them here as soon as those routes serve public read-only content.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://westernexams.com/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

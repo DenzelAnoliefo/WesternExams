@@ -2,23 +2,94 @@
 <html lang="en" class="dark">
 <head>
   <meta charset="utf-8">
-  <title>WesternExams</title>
+  <title>WesternExams — Past Exams &amp; Midterms for Western University Courses</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="Free archive of past exams, midterms, and finals for Western University (UWO) courses. Search by course code, preview exam PDFs, and contribute your own.">
+  <link rel="canonical" href="https://westernexams.com/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#4F2683">
+
+  <meta property="og:type" content="website">
   <meta property="og:site_name" content="WesternExams">
+  <meta property="og:title" content="WesternExams — Past Exams &amp; Midterms for Western University Courses">
+  <meta property="og:description" content="Free archive of past exams, midterms, and finals for Western University (UWO) courses. Search by course code, preview PDFs, and contribute your own past papers.">
+  <meta property="og:url" content="https://westernexams.com/">
+  <meta property="og:locale" content="en_CA">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="WesternExams — Past Exams &amp; Midterms for Western University Courses">
+  <meta name="twitter:description" content="Free archive of past exams, midterms, and finals for Western University (UWO) courses. Search by course code and preview PDFs.">
+
   <meta name="google-site-verification" content="2Vq1U4GDJ8npQaKp5oo0Viz94duBEZOjcjKYgj0onkg" />
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+
   <script type="application/ld+json">
 {
-  "@context" : "https://schema.org",
-  "@type" : "WebSite",
-  "name" : "WesternExams",
-  "alternateName" : "Western Exams",
-  "url" : "https://westernexams.com/"
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://westernexams.com/#website",
+      "name": "WesternExams",
+      "alternateName": ["Western Exams", "Western University Exams", "UWO Exams"],
+      "url": "https://westernexams.com/",
+      "inLanguage": "en-CA",
+      "description": "Free archive of past exams, midterms, and finals for Western University (UWO) courses."
+    },
+    {
+      "@type": "CollectionPage",
+      "@id": "https://westernexams.com/#webpage",
+      "url": "https://westernexams.com/",
+      "name": "WesternExams — Past Exams & Midterms for Western University Courses",
+      "isPartOf": { "@id": "https://westernexams.com/#website" },
+      "about": {
+        "@type": "CollegeOrUniversity",
+        "name": "Western University",
+        "alternateName": ["UWO", "University of Western Ontario"],
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "London",
+          "addressRegion": "ON",
+          "addressCountry": "CA"
+        }
+      }
+    }
+  ]
 }
-</script>
+  </script>
 </head>
 <body>
-  <app-root></app-root>
+  <app-root>
+    <!--
+      Static fallback content: visible to crawlers and to users before Angular
+      hydrates, replaced the moment <app-root> bootstraps. Keep in sync with
+      the landing component's hero copy.
+    -->
+    <main>
+      <h1>WesternExams — Past Exams &amp; Midterms for Western University Courses</h1>
+      <p>
+        WesternExams is a free, student-built archive of past exams, midterms, and
+        final exams for courses at Western University (UWO) in London, Ontario.
+        Search the archive by course code — for example CS1027, CALC1000, or
+        BIOL1001 — preview exam PDFs in your browser, and contribute past papers
+        to help other students prepare.
+      </p>
+      <h2>What you can do on WesternExams</h2>
+      <ul>
+        <li><strong>Exam search</strong> — find past exams by course code, professor, or year.</li>
+        <li><strong>PDF preview</strong> — read exams directly in your browser before downloading.</li>
+        <li><strong>Contribute</strong> — upload past exams to help fellow Western students.</li>
+        <li><strong>Always free</strong> — no subscriptions and no paywalls, for every Western course.</li>
+      </ul>
+      <p>
+        The archive spans hundreds of Western University courses across all
+        faculties, including Science, Engineering, Social Science, Health
+        Sciences, and the Ivey Business School.
+      </p>
+      <p><noscript>JavaScript is required for search. The exam archive itself is free to browse once enabled.</noscript></p>
+    </main>
+  </app-root>
 </body>
 </html>
