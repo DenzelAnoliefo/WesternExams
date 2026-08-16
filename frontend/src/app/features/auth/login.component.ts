@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
@@ -56,7 +56,11 @@ export class LoginComponent {
   loading = false;
   error = '';
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   onSubmit(): void {
     if (!this.email || !this.password) return;
@@ -66,12 +70,26 @@ export class LoginComponent {
 
     this.auth.login({ email: this.email, password: this.password }).subscribe({
       next: () => {
-        this.router.navigate(['/search']);
+        this.router.navigateByUrl(this.redirectTarget());
       },
       error: () => {
         this.loading = false;
         this.error = 'Invalid email or password. Please check your credentials or sign up for an account.';
       }
     });
+  }
+
+  /**
+   * Where to go after a successful login. Only same-site absolute paths are
+   * accepted: anything protocol-relative or absolute would let a crafted
+   * ?redirect= turn this page into an open redirect.
+   */
+  private redirectTarget(): string {
+    const target = this.route.snapshot.queryParamMap.get('redirect');
+
+    if (target && target.startsWith('/') && !target.startsWith('//')) {
+      return target;
+    }
+    return '/search';
   }
 }

@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards/auth.guard';
 import { SeoData } from './core/services/seo.service';
 
 /** Route `data.seo` is consumed by AppComponent on each NavigationEnd. */
@@ -22,7 +21,8 @@ export const routes: Routes = [
   },
   {
     path: 'search',
-    canActivate: [authGuard],
+    // Public: the backend already serves exam metadata unauthenticated, and
+    // crawlers must reach this page for course-level queries to ever rank.
     loadComponent: () => import('./features/search/search.component').then(m => m.SearchComponent),
     data: {
       seo: {
@@ -36,10 +36,11 @@ export const routes: Routes = [
   },
   {
     path: 'exams/:id',
-    canActivate: [authGuard],
+    // Public. Auth is enforced on the download action instead, so a visitor
+    // can see the exam before being asked to sign up.
     loadComponent: () => import('./features/exam-detail/exam-detail.component').then(m => m.ExamDetailComponent)
-    // No static seo data: the exam detail component should set title and
-    // description from the loaded exam once those routes are public.
+    // No static seo data: the component sets title and description from the
+    // loaded exam, since they depend on the course code and term.
   },
   {
     path: 'login',

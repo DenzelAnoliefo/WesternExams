@@ -35,10 +35,18 @@ public class SecurityFilterChainConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/api/v1/exams/**").permitAll()
+                        // Exam metadata and the inline PDF preview are public so
+                        // that search engines can index course pages and visitors
+                        // can see an exam before being asked to sign up. Listed
+                        // explicitly rather than as GET /api/v1/exams/** so a new
+                        // GET endpoint is not made public by accident.
+                        .requestMatchers(HttpMethod.GET, "/api/v1/exams").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/exams/{id}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/exams/{id}/download").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/courses/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+                        // Uploads and deletes remain authenticated.
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->

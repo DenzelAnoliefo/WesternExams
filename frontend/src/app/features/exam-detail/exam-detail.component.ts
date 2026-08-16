@@ -1,8 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ExamService } from '../../core/services/exam.service';
+import { AuthService } from '../../core/services/auth.service';
+import { SeoService } from '../../core/services/seo.service';
 import { Exam } from '../../core/models/exam.model';
 
 @Component({
@@ -42,10 +44,10 @@ import { Exam } from '../../core/models/exam.model';
                       </svg>
                     </div>
                     <p class="text-gray-400 text-sm font-medium mb-1">Could not load PDF preview</p>
-                    <a [href]="downloadUrl" target="_blank" rel="noopener noreferrer"
-                       class="text-western-purple-light text-sm hover:underline">
+                    <button type="button" (click)="onDownload()"
+                            class="text-western-purple-light text-sm hover:underline">
                       Download instead
-                    </a>
+                    </button>
                   </div>
                 } @else {
                   <div class="flex flex-col items-center justify-center h-[50vh]">
@@ -90,14 +92,16 @@ import { Exam } from '../../core/models/exam.model';
                   }
                 </div>
 
-                <!-- Download button -->
-                <a [href]="downloadUrl" target="_blank" rel="noopener noreferrer"
-                   class="flex items-center justify-center gap-2 w-full bg-western-purple hover:bg-western-purple-light text-white font-medium py-3 rounded-lg transition-colors text-sm">
+                <!-- Download button. Signed-out visitors are sent to login and
+                     returned here afterwards, so the prompt lands after they
+                     have already seen the exam. -->
+                <button type="button" (click)="onDownload()"
+                        class="flex items-center justify-center gap-2 w-full bg-western-purple hover:bg-western-purple-light text-white font-medium py-3 rounded-lg transition-colors text-sm">
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                   </svg>
-                  Download PDF
-                </a>
+                  {{ isAuthenticated() ? 'Download PDF' : 'Sign in to download' }}
+                </button>
 
               </div>
             </div>
@@ -136,6 +140,11 @@ export class ExamDetailComponent implements OnInit, OnDestroy {
   loading = true;
   pdfError = false;
   private blobUrl: string | null = null;
+  private examId = '';
+
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly seo = inject(SeoService);
 
   constructor(
     private route: ActivatedRoute,
@@ -143,17 +152,46 @@ export class ExamDetailComponent implements OnInit, OnDestroy {
     private sanitizer: DomSanitizer
   ) {}
 
+  isAuthenticated(): boolean {
+    return this.auth.isAuthenticated();
+  }
+
+  /**
+   * Signed-out visitors are routed to login with a return path rather than
+   * hitting the download directly, so they come back to this exam afterwards.
+   */
+  onDownload(): void {
+    if (!this.auth.isAuthenticated()) {
+      this.router.navigate(['/login'], {
+        queryParams: { redirect: `/exams/${this.examId}` }
+      });
+      return;
+    }
+
+    window.open(this.downloadUrl, '_blank', 'noopener');
+  }
+
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id')!;
+    this.examId = id;
     this.downloadUrl = this.examService.getDownloadUrl(id);
 
     this.examService.getExam(id).subscribe({
       next: (exam) => {
         this.exam = exam;
         this.loading = false;
+        this.applySeo(exam);
       },
       error: () => {
         this.loading = false;
+        // Without this the page keeps the previously viewed exam's title and
+        // canonical, pointing a broken page at an unrelated URL.
+        this.seo.update({
+          title: 'Exam Not Found | WesternExams',
+          description: 'This exam may have been removed or the link is invalid.',
+          canonicalPath: `/exams/${this.examId}`,
+          noindex: true
+        });
       }
     });
 
@@ -165,6 +203,31 @@ export class ExamDetailComponent implements OnInit, OnDestroy {
       error: () => {
         this.pdfError = true;
       }
+    });
+  }
+
+  /**
+   * Title and description are built from the exam itself so each page targets
+   * its own course-level queries, e.g. "cs2214 midterm fall 2024".
+   */
+  private applySeo(exam: Exam): void {
+    const type = exam.examType === 'MIDTERM' ? 'Midterm' : 'Final Exam';
+    // term arrives as an enum ('FALL'), which would otherwise shout mid-title.
+    const season = exam.term
+      ? exam.term.charAt(0) + exam.term.slice(1).toLowerCase()
+      : '';
+    const term = [season, exam.year].filter(Boolean).join(' ');
+    const title = `${exam.courseCode} ${type} ${term} | WesternExams`.replace(/\s+/g, ' ');
+
+    const professor = exam.professor ? ` Professor ${exam.professor}.` : '';
+    const description =
+      `${exam.courseCode} ${exam.courseName} ${type.toLowerCase()} from ${term} ` +
+      `at Western University (UWO).${professor} Preview the exam PDF free on WesternExams.`;
+
+    this.seo.update({
+      title,
+      description: description.replace(/\s+/g, ' ').trim(),
+      canonicalPath: `/exams/${this.examId}`
     });
   }
 
