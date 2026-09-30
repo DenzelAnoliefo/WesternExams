@@ -2,7 +2,7 @@
 
 > **Live Website:** [westernexams.com](https://westernexams.com)
 
-A free, student-built archive of past midterms and finals for Western University courses. Live at [westernexams.com](https://westernexams.com), with more than 200 courses and over 50 users as of September 2026.
+A free, student-built archive of past study materials for Western University courses with more than 200 courses and over 50 users as of September 2026.
  
 Built and maintained by Denzel Anoliefo, Computer Science at Western University. Not affiliated with Western University.
  
