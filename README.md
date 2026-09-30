@@ -123,7 +123,7 @@ GitHub Actions runs the backend tests and a production build of the frontend on 
 - [ ] A dedicated page for every course
 ## License and contact
  
-WesternExams is released under the [MIT License](LICENSE). If you'd like to contribute, start with [CONTRIBUTING.md](https://github.com/DenzelAnoliefo/WesternExams/tree/main?tab=contributing-ov-file). For anything else, email me at danoliefo@gmail.com.
+WesternExams is released under the [MIT License]([LICENSE](https://github.com/DenzelAnoliefo/WesternExams/tree/main?tab=MIT-1-ov-file)). If you'd like to contribute, start with [CONTRIBUTING.md](https://github.com/DenzelAnoliefo/WesternExams/tree/main?tab=contributing-ov-file). For anything else, email me at danoliefo@gmail.com.
 
 > [!IMPORTANT]
 > Not affiliated with Western University.
