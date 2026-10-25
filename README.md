@@ -4,7 +4,8 @@
 
 A free, student-built archive of past study materials for Western University courses with more than 200 courses and over 50 users as of September 2026.
  
-Built and maintained by Denzel Anoliefo, Computer Science at Western University. Not affiliated with Western University.
+> [!IMPORTANT]
+> Built and maintained by Denzel Anoliefo, Computer Science at Western University. Not affiliated with Western University.
  
 ## Why it exists
  
