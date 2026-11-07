@@ -90,12 +90,6 @@ import { Exam } from '../../core/models/exam.model';
                     <p class="text-xs text-gray-500">Term</p>
                     <p class="text-sm text-white font-medium">{{ exam.term }} {{ exam.year }}</p>
                   </div>
-                  @if (exam.professor) {
-                    <div>
-                      <p class="text-xs text-gray-500">Professor</p>
-                      <p class="text-sm text-white font-medium">{{ exam.professor }}</p>
-                    </div>
-                  }
                 </div>
 
                 <!-- Download button. Signed-out visitors are sent to login and
